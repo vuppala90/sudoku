@@ -66,11 +66,6 @@ $(document).ready(function() {
 		$('.secondary-table.1 td').each(function(){
 			matrix.push(this.innerText);
 		});
-		// var matrixx = getMatrix(mainArray, 6, 3);
-		// var columnn = getColumn(mainArray, 3);
-
-		// console.log('the matrix is ', matrixx);
-		// console.log('the column is ', columnn);
 
 		for(var i=0; i<mainArray.length; i++){
 			for(var j=0; j<mainArray[i].length; j++){
@@ -82,57 +77,56 @@ $(document).ready(function() {
 					existingNumbers = concatArray(existingNumbers, mMatrix);
 					var difference = getDifference(possibleValues, existingNumbers);
 					mainArray[i][j] = difference;
-					console.log('the newly added values at position ' + i + j , difference);
 				}
 			}
 		}
 
-		//solveIt(mainArray);
 		for(var i=0; i<mainArray.length; i++){
 			for(var j=0; j<mainArray[i].length; j++){
-				if(Array.isArray(mainArray[i][j]) && mainArray[i][j].length > 1){
-					solveIt(mainArray);
+				if(Array.isArray(mainArray[i][j]) && mainArray[i][j].length === 1){
+					solveNakedSingles(mainArray[i], mainArray[i][j]);	
 				}
 			}
 		}
+
+		for(var i=0; i<mainArray.length; i++){
+			var newColumns = getColumn(mainArray, i);
+			for(var j=0; j<newColumns.length; j++){
+				if(Array.isArray(newColumns[j]) && newColumns[j].length === 1){
+					solveNakedSingles(newColumns, newColumns[j]);
+				}	
+			}
+		}
+
+		//making all the single valued arrays as strings
+		for(var i=0; i<mainArray.length; i++){
+			for(var j=0; j<mainArray[i].length; j++){
+				if(Array.isArray(mainArray[i][j]) && mainArray[i][j].length === 1){
+					mainArray[i][j] = makeSingleValueArraytoNumber(mainArray[i][j]);
+				}
+			}
+		}
+
+		//make all the non array elements of a row as an array and compare them with the array elements of that row and remove the common ones
+		for(var i=0; i<mainArray.length; i++){
+			var alpha = makeSinglesasArray(mainArray[i]);
+			for(var j=0; j<mainArray[i].length; j++){
+				if(mainArray[i][j].length){
+					//
+			}
+
+		//run nakedSingle on the newly formed matrix
 
 		console.log('the final result is ', mainArray);
-
-		//console.log('the main array is ', mainArray[1][2]);
-
-
 	}),
-	solveIt = function(arr){
-		for(var i=0; i<arr.length; i++){
-			for(var j=0; j<arr[i].length; j++){
-				if(Array.isArray(arr[i][j]) && arr[i][j].length === 1){
-					solveRow(arr[i], arr[i][j]);
-					console.log('now the first row is', arr[i]);
-					solveColumn(arr, j, arr[i][j]);
-				}
-
-			}
-		}
-
-		for(var i=0; i<arr.length; i++){
-			for(var j=0; j<arr[i].length; j++){
-				if(Array.isArray(arr[i][j]) && arr[i][j].length === 2){
-					solveRow2(arr[i], arr[i][j]);
-					solveColumn2(arr, j, arr[i][j]);
-				}
-
-			}
-		}
-		//console.log('the final result is ', arr);	
-	},
-	solveRow = function(row, number){
+	solveNakedSingles = function(row, number){
 		var temp = [];
 		for(var i=0; i<row.length; i++){
 			if(row[i].length && row[i].length > 1){
 				var hi = row[i];
 			}
 			if(row[i].length && row[i].length > 1 && hi){
-				var send = getCommon(row[i], hi);
+				var send = getCommon(number, hi);
 				var index = row[i].indexOf(send[0]);
 
 				if (index > -1) {
@@ -140,75 +134,19 @@ $(document).ready(function() {
 				}
 			}
 		}
-		console.log('solve row result is ', row);
-		//return row;
 	},
-	solveRow2 = function(row, number){
-		var temp = [];
-		for(var i=0; i<row.length; i++){	
-			if(row[i].length && row[i].length === 2){
-				if(temp.length >1) {
-					if(temp.sort().join(',') === row[i].sort().join(',')){
-						temp.push(row[i]);
-						temp = [].concat.apply([],temp);
-					}	
-				}else{
-					temp.push(row[i]);
-					temp = [].concat.apply([],temp);
-				}	
-			}
-			//temp = [].concat.apply([],temp);
-			if(row[i].length && row[i].length === 3){
-				var send1 = getCommon(row[i], temp);
-				if (index > -1) {
-				    row[i].splice(index, 1);
-				}
-			}
-		}
-	}	
-	solveColumn = function(column, index, number){
-		var temp = [];
-		var hello = getColumn(column, index);
-		for(var i=0; i<hello.length; i++){
-			if(hello[i].length && hello[i].length === 1){
-				var hi = hello[i];
-			}
-			if(hello[i].length && hello[i].length > 1 && hi){
-				var send = getCommon(hello[i], number);
-				var index = hello[i].indexOf(send[0]);
-
-				if (index > -1) {
-				    hello[i].splice(index, 1);
-				}
-			}
-		}
-		return hello;
+	makeSingleValueArraytoNumber =  function(arr){
+		return arr.toString();
 	},
-	solveColumn2 = function(column, index, number){
-		var temp = [];
-		for(var i=0; i<hello.length; i++){	
-			if(hello[i].length && hello[i].length === 2){
-				if(temp.length >1) {
-					if(temp.sort().join(',') === hello[i].sort().join(',')){
-						temp.push(hello[i]);
-						temp = [].concat.apply([],temp);
-					}	
-				}else{
-					temp.push(hello[i]);
-					temp = [].concat.apply([],temp);
-				}
-			}
-			//temp = [].concat.apply([],temp);
-			if(hello[i].length && hello[i].length === 3){
-				var send1 = getCommon(hello[i], temp);
-				if (index > -1) {
-				    hello[i].splice(index, 1);
-				}
+	makeSinglesasArray = function(arr){
+		var newArray = [];
+		for(var i=0; i<arr.length; i++){
+			if(!arr[i].length){
+				newArray.push(arr[i]);
 			}
 		}
-		return hello;
-		console.log('solve column result is ', hello);
-	}
+		return newArray;
+	},
 	concatArray = function(array1, array2){
 		for(var i=0; i<array2.length; i++){
 			array1.push(array2[i]);
@@ -293,12 +231,4 @@ $(document).ready(function() {
 		}
 		return finalMatrix;
 	};
-	/*$('.typehere').on('change', function(event){
-		var value = $('.typehere').val(),
-	    	enteredValue = String.fromCharCode(event.keyCode);
-	    if(value !== ''){
-    		$('.typehere').val(enteredValue);
-    		console.log('I am here');
-    	}
-    });	*/
 });
