@@ -1,0 +1,21 @@
+.header{
+	text-align: center;
+	font-size: 26px;
+	font-weight: bold;
+}
+.secondary-table{
+	align: center;
+	border: 3px solid;
+	width: 150px;
+	height: 100px;
+}
+td{
+	padding: 0px;
+}
+tr{
+	padding: 0px;
+}
+input{
+	width: 50px;
+	height: 30px;
+}
