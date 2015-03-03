@@ -6,7 +6,7 @@ HTML - Markup
 CSS - Styling
 JQuery - JS
 
-I used the sudoku example board provided - http://en.wikipedia.org/wiki/File:Sudoku-by-L2G-20050714.svg
+I used the sudoku example board from - http://en.wikipedia.org/wiki/File:Sudoku-by-L2G-20050714.svg
 
 Implemented an algorithm to solve the sudoku, by removing common and obvious elements from the row, column and  3*3 cell and iterating with the steps followed from:
 http://www.sudokuessentials.com/sudoku_tips.html
